@@ -1,6 +1,10 @@
+import com.linguagensformais.modelo.Gramatica;
 import com.linguagensformais.modelo.ModeloTabelaGramatica;
 import com.linguagensformais.modelo.Producao;
+import com.linguagensformais.modelo.ProducaoUtil;
 import java.util.ArrayList;
+import java.util.logging.Level;
+import java.util.logging.Logger;
 import javax.swing.JOptionPane;
 
 public class Main extends javax.swing.JFrame {
@@ -26,8 +30,8 @@ public class Main extends javax.swing.JFrame {
     private ModeloTabelaGramatica modeloGramaticaGerada;
     
     public Main() {
-        modeloGramaticaOrigem = new ModeloTabelaGramatica(new ArrayList<Producao>(), true); 
-        modeloGramaticaGerada = new ModeloTabelaGramatica(new ArrayList<Producao>(), false);       
+        modeloGramaticaOrigem = new ModeloTabelaGramatica(new Gramatica(), true); 
+        modeloGramaticaGerada = new ModeloTabelaGramatica(new Gramatica(), false);       
         initComponents();
     }
 
@@ -51,6 +55,16 @@ public class Main extends javax.swing.JFrame {
         buttonNovaLinha = new javax.swing.JButton();
         buttonExcluirLinha = new javax.swing.JButton();
         buttonLimparLinha = new javax.swing.JButton();
+        definirVazio = new javax.swing.JButton();
+        jLabel3 = new javax.swing.JLabel();
+        textSimboloInicialOrigem = new javax.swing.JTextField();
+        textSimboloInicialDestino = new javax.swing.JTextField();
+        jLabel4 = new javax.swing.JLabel();
+        jMenuBar1 = new javax.swing.JMenuBar();
+        jMenu1 = new javax.swing.JMenu();
+        jMenu2 = new javax.swing.JMenu();
+        jMenuItem1 = new javax.swing.JMenuItem();
+        menuDuplicarProducao = new javax.swing.JMenuItem();
 
         setDefaultCloseOperation(javax.swing.WindowConstants.EXIT_ON_CLOSE);
 
@@ -66,10 +80,25 @@ public class Main extends javax.swing.JFrame {
         });
 
         buttonSimplificacaoCombinada.setText("Simplificação Combinada");
+        buttonSimplificacaoCombinada.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                buttonSimplificacaoCombinadaActionPerformed(evt);
+            }
+        });
 
         buttonEliminarProducoesVazias1.setText("Producoes Vazias");
+        buttonEliminarProducoesVazias1.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                buttonEliminarProducoesVazias1ActionPerformed(evt);
+            }
+        });
 
         buttonEliminarProducoesUnitarias.setText("Producoes Unitarias");
+        buttonEliminarProducoesUnitarias.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                buttonEliminarProducoesUnitariasActionPerformed(evt);
+            }
+        });
 
         javax.swing.GroupLayout jPanel1Layout = new javax.swing.GroupLayout(jPanel1);
         jPanel1.setLayout(jPanel1Layout);
@@ -173,28 +202,60 @@ public class Main extends javax.swing.JFrame {
             }
         });
 
+        definirVazio.setText("Definir Vazio");
+        definirVazio.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                definirVazioActionPerformed(evt);
+            }
+        });
+
         javax.swing.GroupLayout jPanel3Layout = new javax.swing.GroupLayout(jPanel3);
         jPanel3.setLayout(jPanel3Layout);
         jPanel3Layout.setHorizontalGroup(
             jPanel3Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addGroup(jPanel3Layout.createSequentialGroup()
+            .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, jPanel3Layout.createSequentialGroup()
                 .addContainerGap()
-                .addGroup(jPanel3Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                    .addComponent(buttonNovaLinha, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
-                    .addComponent(buttonLimparLinha, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
-                    .addComponent(buttonExcluirLinha, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
+                .addGroup(jPanel3Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.TRAILING)
+                    .addComponent(definirVazio, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                    .addComponent(buttonNovaLinha, javax.swing.GroupLayout.Alignment.LEADING, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                    .addComponent(buttonLimparLinha, javax.swing.GroupLayout.Alignment.LEADING, javax.swing.GroupLayout.DEFAULT_SIZE, 193, Short.MAX_VALUE)
+                    .addComponent(buttonExcluirLinha, javax.swing.GroupLayout.Alignment.LEADING, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
                 .addContainerGap())
         );
         jPanel3Layout.setVerticalGroup(
             jPanel3Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
             .addGroup(jPanel3Layout.createSequentialGroup()
-                .addComponent(buttonNovaLinha, javax.swing.GroupLayout.PREFERRED_SIZE, 34, javax.swing.GroupLayout.PREFERRED_SIZE)
+                .addComponent(buttonNovaLinha, javax.swing.GroupLayout.PREFERRED_SIZE, 22, javax.swing.GroupLayout.PREFERRED_SIZE)
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                .addComponent(buttonLimparLinha, javax.swing.GroupLayout.PREFERRED_SIZE, 36, javax.swing.GroupLayout.PREFERRED_SIZE)
+                .addComponent(buttonLimparLinha)
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                .addComponent(buttonExcluirLinha, javax.swing.GroupLayout.DEFAULT_SIZE, 35, Short.MAX_VALUE)
-                .addContainerGap())
+                .addComponent(buttonExcluirLinha)
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                .addComponent(definirVazio)
+                .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
         );
+
+        jLabel3.setText("SimboloInicial ->");
+
+        textSimboloInicialOrigem.addFocusListener(new java.awt.event.FocusAdapter() {
+            public void focusLost(java.awt.event.FocusEvent evt) {
+                textSimboloInicialOrigemFocusLost(evt);
+            }
+        });
+        textSimboloInicialOrigem.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                textSimboloInicialOrigemActionPerformed(evt);
+            }
+        });
+
+        textSimboloInicialDestino.setEditable(false);
+        textSimboloInicialDestino.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                textSimboloInicialDestinoActionPerformed(evt);
+            }
+        });
+
+        jLabel4.setText("SimboloInicial ->");
 
         javax.swing.GroupLayout jPanel2Layout = new javax.swing.GroupLayout(jPanel2);
         jPanel2.setLayout(jPanel2Layout);
@@ -207,7 +268,12 @@ public class Main extends javax.swing.JFrame {
                         .addComponent(jLabel1)
                         .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
                     .addGroup(jPanel2Layout.createSequentialGroup()
-                        .addComponent(jScrollPane1, javax.swing.GroupLayout.PREFERRED_SIZE, 164, javax.swing.GroupLayout.PREFERRED_SIZE)
+                        .addGroup(jPanel2Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING, false)
+                            .addComponent(jScrollPane1, javax.swing.GroupLayout.PREFERRED_SIZE, 164, javax.swing.GroupLayout.PREFERRED_SIZE)
+                            .addGroup(jPanel2Layout.createSequentialGroup()
+                                .addComponent(jLabel3)
+                                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
+                                .addComponent(textSimboloInicialOrigem)))
                         .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
                         .addGroup(jPanel2Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
                             .addComponent(jPanel1, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
@@ -217,25 +283,69 @@ public class Main extends javax.swing.JFrame {
                     .addComponent(jScrollPane2, javax.swing.GroupLayout.PREFERRED_SIZE, 164, javax.swing.GroupLayout.PREFERRED_SIZE)
                     .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, jPanel2Layout.createSequentialGroup()
                         .addComponent(jLabel2)
-                        .addGap(45, 45, 45))))
+                        .addGap(45, 45, 45))
+                    .addGroup(jPanel2Layout.createSequentialGroup()
+                        .addComponent(jLabel4)
+                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
+                        .addComponent(textSimboloInicialDestino))))
         );
         jPanel2Layout.setVerticalGroup(
             jPanel2Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
             .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, jPanel2Layout.createSequentialGroup()
-                .addGap(0, 9, Short.MAX_VALUE)
+                .addGap(0, 31, Short.MAX_VALUE)
                 .addGroup(jPanel2Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
                     .addComponent(jLabel1)
                     .addComponent(jLabel2))
-                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                .addGroup(jPanel2Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                .addGroup(jPanel2Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING, false)
                     .addGroup(jPanel2Layout.createSequentialGroup()
-                        .addComponent(jPanel3, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
-                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                        .addGap(163, 163, 163)
                         .addComponent(jPanel1, javax.swing.GroupLayout.PREFERRED_SIZE, 188, javax.swing.GroupLayout.PREFERRED_SIZE))
-                    .addComponent(jScrollPane1, javax.swing.GroupLayout.Alignment.TRAILING, javax.swing.GroupLayout.PREFERRED_SIZE, 340, javax.swing.GroupLayout.PREFERRED_SIZE)
-                    .addComponent(jScrollPane2, javax.swing.GroupLayout.Alignment.TRAILING, javax.swing.GroupLayout.PREFERRED_SIZE, 345, javax.swing.GroupLayout.PREFERRED_SIZE))
+                    .addGroup(jPanel2Layout.createSequentialGroup()
+                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                        .addComponent(jPanel3, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
+                    .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, jPanel2Layout.createSequentialGroup()
+                        .addGap(18, 18, 18)
+                        .addGroup(jPanel2Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                            .addGroup(jPanel2Layout.createSequentialGroup()
+                                .addGroup(jPanel2Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
+                                    .addComponent(jLabel3)
+                                    .addComponent(textSimboloInicialOrigem, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
+                                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
+                            .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, jPanel2Layout.createSequentialGroup()
+                                .addGroup(jPanel2Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
+                                    .addComponent(jLabel4)
+                                    .addComponent(textSimboloInicialDestino, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
+                                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)))
+                        .addGroup(jPanel2Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.TRAILING)
+                            .addComponent(jScrollPane1, javax.swing.GroupLayout.PREFERRED_SIZE, 314, javax.swing.GroupLayout.PREFERRED_SIZE)
+                            .addComponent(jScrollPane2, javax.swing.GroupLayout.PREFERRED_SIZE, 316, javax.swing.GroupLayout.PREFERRED_SIZE))))
                 .addContainerGap())
         );
+
+        jMenu1.setText("File");
+        jMenuBar1.add(jMenu1);
+
+        jMenu2.setText("Utilitarios");
+
+        jMenuItem1.setText("TesteLinha");
+        jMenuItem1.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                jMenuItem1ActionPerformed(evt);
+            }
+        });
+        jMenu2.add(jMenuItem1);
+
+        menuDuplicarProducao.setText("Duplicar Producao");
+        menuDuplicarProducao.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                menuDuplicarProducaoActionPerformed(evt);
+            }
+        });
+        jMenu2.add(menuDuplicarProducao);
+
+        jMenuBar1.add(jMenu2);
+
+        setJMenuBar(jMenuBar1);
 
         javax.swing.GroupLayout layout = new javax.swing.GroupLayout(getContentPane());
         getContentPane().setLayout(layout);
@@ -252,27 +362,105 @@ public class Main extends javax.swing.JFrame {
     }// </editor-fold>//GEN-END:initComponents
 
     private void buttonEliminarSombolosInuteisActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_buttonEliminarSombolosInuteisActionPerformed
-        
+        if(!this.getModeloGramaticaOrigem().getGramatica().isValida()){
+                JOptionPane.showMessageDialog(null, "Gramatica Origem invalida");
+                return;
+        }
+        this.getModeloGramaticaGerada().setGramatica(this.getModeloGramaticaOrigem().getGramatica().elimitarSimbolosInuteis());
+        this.textSimboloInicialDestino.setText(this.getModeloGramaticaGerada().getGramatica().getSimboloInicial());
+        this.getModeloGramaticaGerada().fireTableDataChanged();
     }//GEN-LAST:event_buttonEliminarSombolosInuteisActionPerformed
 
     private void buttonExcluirLinhaActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_buttonExcluirLinhaActionPerformed
         if(tableLinguagemOrigem.getSelectedRow() != -1){
-            this.getModeloGramaticaOrigem().gramatica.remove(this.tableLinguagemOrigem.getSelectedRow());
+            this.getModeloGramaticaOrigem().getGramatica().remove(this.tableLinguagemOrigem.getSelectedRow());
             this.getModeloGramaticaOrigem().fireTableDataChanged();
         }else{
             JOptionPane.showMessageDialog(null, "Selecione uma linha da Gramatica de origem para realizar a exclusão");
         }
+        this.getModeloGramaticaOrigem().fireTableDataChanged();
     }//GEN-LAST:event_buttonExcluirLinhaActionPerformed
 
     private void buttonNovaLinhaActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_buttonNovaLinhaActionPerformed
-        this.getModeloGramaticaOrigem().gramatica.add(new Producao());
+        this.getModeloGramaticaOrigem().getGramatica().add(new Producao());
         this.getModeloGramaticaOrigem().fireTableDataChanged();
     }//GEN-LAST:event_buttonNovaLinhaActionPerformed
 
     private void buttonLimparLinhaActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_buttonLimparLinhaActionPerformed
-        this.getModeloGramaticaOrigem().gramatica.clear();
+        this.getModeloGramaticaOrigem().getGramatica().clear();
         this.getModeloGramaticaOrigem().fireTableDataChanged();
     }//GEN-LAST:event_buttonLimparLinhaActionPerformed
+
+    private void definirVazioActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_definirVazioActionPerformed
+        if(tableLinguagemOrigem.getSelectedRow() != -1){
+            this.getModeloGramaticaOrigem().getGramatica().get(this.tableLinguagemOrigem.getSelectedRow()).setVazio(true);
+            this.getModeloGramaticaOrigem().fireTableDataChanged();
+        }else{
+            JOptionPane.showMessageDialog(null, "Selecione uma linha da Gramatica de origem para definir como vazio");
+        }
+    }//GEN-LAST:event_definirVazioActionPerformed
+
+    private void buttonEliminarProducoesUnitariasActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_buttonEliminarProducoesUnitariasActionPerformed
+        if(!this.getModeloGramaticaOrigem().getGramatica().isValida()){
+                JOptionPane.showMessageDialog(null, "Gramatica Origem invalida");
+                return;
+        }
+        this.getModeloGramaticaGerada().setGramatica(this.getModeloGramaticaOrigem().getGramatica().clone());
+        this.getModeloGramaticaGerada().getGramatica().eliminarUnitarios();
+        this.textSimboloInicialDestino.setText(this.getModeloGramaticaGerada().getGramatica().getSimboloInicial());
+        this.getModeloGramaticaGerada().fireTableDataChanged();
+    }//GEN-LAST:event_buttonEliminarProducoesUnitariasActionPerformed
+
+    private void buttonSimplificacaoCombinadaActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_buttonSimplificacaoCombinadaActionPerformed
+        if(!this.getModeloGramaticaOrigem().getGramatica().isValida()){
+                JOptionPane.showMessageDialog(null, "Gramatica Origem invalida");
+                return;
+        }
+        this.textSimboloInicialDestino.setText(this.getModeloGramaticaGerada().getGramatica().getSimboloInicial());
+        this.getModeloGramaticaOrigem().fireTableDataChanged();
+    }//GEN-LAST:event_buttonSimplificacaoCombinadaActionPerformed
+
+    private void buttonEliminarProducoesVazias1ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_buttonEliminarProducoesVazias1ActionPerformed
+            if(!this.getModeloGramaticaOrigem().getGramatica().isValida()){
+                JOptionPane.showMessageDialog(null, "Gramatica Origem invalida");
+                return;
+            }
+            this.getModeloGramaticaOrigem().getGramatica().eliminarVazias();
+            this.getModeloGramaticaGerada().setGramatica(this.getModeloGramaticaOrigem().getGramatica());
+            this.textSimboloInicialDestino.setText(this.getModeloGramaticaGerada().getGramatica().getSimboloInicial());
+            this.getModeloGramaticaGerada().fireTableDataChanged();
+            this.getModeloGramaticaOrigem().fireTableDataChanged();
+    }//GEN-LAST:event_buttonEliminarProducoesVazias1ActionPerformed
+
+    private void menuDuplicarProducaoActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_menuDuplicarProducaoActionPerformed
+            if(tableLinguagemOrigem.getSelectedRow() != -1){
+                try {
+                    this.getModeloGramaticaOrigem().getGramatica().add(
+                    this.getModeloGramaticaOrigem().getGramatica().get(this.tableLinguagemOrigem.getSelectedRow()).clone());
+                } catch (CloneNotSupportedException ex) {
+                    Logger.getLogger(Main.class.getName()).log(Level.SEVERE, null, ex);
+                }
+                this.getModeloGramaticaOrigem().fireTableDataChanged();
+            }else{
+                JOptionPane.showMessageDialog(null, "Selecione uma linha da Gramatica de origem para duplicar");
+            }
+    }//GEN-LAST:event_menuDuplicarProducaoActionPerformed
+
+    private void jMenuItem1ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jMenuItem1ActionPerformed
+        this.getModeloGramaticaOrigem().getGramatica().pegarTodosNaoTerminais();
+    }//GEN-LAST:event_jMenuItem1ActionPerformed
+
+    private void textSimboloInicialOrigemActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_textSimboloInicialOrigemActionPerformed
+        this.getModeloGramaticaOrigem().getGramatica().setSimboloInicial(this.textSimboloInicialOrigem.getText());
+    }//GEN-LAST:event_textSimboloInicialOrigemActionPerformed
+
+    private void textSimboloInicialDestinoActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_textSimboloInicialDestinoActionPerformed
+        // TODO add your handling code here:
+    }//GEN-LAST:event_textSimboloInicialDestinoActionPerformed
+
+    private void textSimboloInicialOrigemFocusLost(java.awt.event.FocusEvent evt) {//GEN-FIRST:event_textSimboloInicialOrigemFocusLost
+        this.getModeloGramaticaOrigem().getGramatica().setSimboloInicial(this.textSimboloInicialOrigem.getText());
+    }//GEN-LAST:event_textSimboloInicialOrigemFocusLost
 
     public static void main(String args[]) {
         /* Set the Nimbus look and feel */
@@ -302,14 +490,24 @@ public class Main extends javax.swing.JFrame {
     private javax.swing.JButton buttonLimparLinha;
     private javax.swing.JButton buttonNovaLinha;
     private javax.swing.JButton buttonSimplificacaoCombinada;
+    private javax.swing.JButton definirVazio;
     private javax.swing.JLabel jLabel1;
     private javax.swing.JLabel jLabel2;
+    private javax.swing.JLabel jLabel3;
+    private javax.swing.JLabel jLabel4;
+    private javax.swing.JMenu jMenu1;
+    private javax.swing.JMenu jMenu2;
+    private javax.swing.JMenuBar jMenuBar1;
+    private javax.swing.JMenuItem jMenuItem1;
     private javax.swing.JPanel jPanel1;
     private javax.swing.JPanel jPanel2;
     private javax.swing.JPanel jPanel3;
     private javax.swing.JScrollPane jScrollPane1;
     private javax.swing.JScrollPane jScrollPane2;
+    private javax.swing.JMenuItem menuDuplicarProducao;
     private javax.swing.JTable tableLinguagemGerada;
     private javax.swing.JTable tableLinguagemOrigem;
+    private javax.swing.JTextField textSimboloInicialDestino;
+    private javax.swing.JTextField textSimboloInicialOrigem;
     // End of variables declaration//GEN-END:variables
 }
