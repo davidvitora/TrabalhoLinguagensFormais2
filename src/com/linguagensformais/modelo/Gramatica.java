@@ -18,7 +18,7 @@ import java.util.logging.Logger;
  */
 public class Gramatica extends ArrayList<Producao> {
     
-    private String simboloInicial;
+    String simboloInicial;
     public ArrayList<Producao> getList(){
         return this;
     }
@@ -107,6 +107,7 @@ public class Gramatica extends ArrayList<Producao> {
     
     public void EliminarVazios() throws CloneNotSupportedException{
         List<Producao> listaNovasProducoes = new ArrayList<Producao>();
+        List<Producao> producoes = new ArrayList<Producao>();
         VazioUtilList vazioUtilList;
         Producao newProducao;
         for(Producao producao : this){
@@ -134,9 +135,15 @@ public class Gramatica extends ArrayList<Producao> {
         for(int i = 0; i < (this.size() - 1); i++){
             newProducao = this.get(i);
             if(newProducao.isVazio()){
-                this.remove(i);
+                producoes.add(newProducao);
             }
         }
+        
+        for(Producao producao : producoes){
+            this.remove(producao);
+        }
+        
+        this.EliminarEquivalentes();
     }
     
     public Gramatica elimitarSimbolosInuteis(){
@@ -211,11 +218,16 @@ public class Gramatica extends ArrayList<Producao> {
            IteratorVerificarNaoAcessiveis(producao, gramatica);
         }
         
+        producoes.clear();
         for(int i = 0; i < gramatica.size(); i++){
             Producao producao = gramatica.get(i);
             if(producao.isInutil()){
-                gramatica.remove(i);
+                producoes.add(producao);
             }
+        }
+        
+        for(Producao producao : producoes){
+            gramatica.remove(producao);
         }
         
         gramatica.EliminarEquivalentes();
@@ -314,19 +326,7 @@ public class Gramatica extends ArrayList<Producao> {
             this.remove(producaoUnitaria);
         }
         
-    }
-    
-    public void eliminarVazias(){
-        List<Producao> apenasVazias = new ArrayList<Producao>();
-        List<Producao> producoesDoSimbolo;
-        Producao producao;
-        //separa os unitários
-        for(Producao prod : this){
-            if(prod.isVazio()){
-                apenasVazias.add(prod);
-            }
-        }
-        
+        this.EliminarEquivalentes();
         
     }
  
@@ -338,6 +338,7 @@ public class Gramatica extends ArrayList<Producao> {
     
     public Gramatica clone(){
         Gramatica gramatica = new Gramatica();
+        gramatica.setSimboloInicial(this.getSimboloInicial());
         for(Producao producao : this){
             try {
                 gramatica.add(producao.clone());
