@@ -132,7 +132,7 @@ public class Gramatica extends ArrayList<Producao> {
         }
         listaNovasProducoes = null;
         
-        for(int i = 0; i < (this.size() - 1); i++){
+        for(int i = 0; i < this.size(); i++){
             newProducao = this.get(i);
             if(newProducao.isVazio()){
                 producoes.add(newProducao);
@@ -238,11 +238,15 @@ public class Gramatica extends ArrayList<Producao> {
     public void IteratorVerificarNaoAcessiveis(Producao producao, Gramatica gramtica){
         List<Producao> producoes;
         producao.setInutil(false);
-        for(Simbolo simbolo : producao.getSimbolos()){
-            if(simbolo.getClass().equals(NaoTerminal.class)){
-                producoes = this.getProducoesByEsquerda(simbolo.getConteudo());
-                for(Producao prod : producoes){
-                    IteratorVerificarNaoAcessiveis(prod, gramtica);
+        if(!producao.isInutil()){
+            return;
+        }else{
+            for(Simbolo simbolo : producao.getSimbolos()){
+                if(simbolo.getClass().equals(NaoTerminal.class)){
+                    producoes = this.getProducoesByEsquerda(simbolo.getConteudo());
+                    for(Producao prod : producoes){
+                        IteratorVerificarNaoAcessiveis(prod, gramtica);
+                    }
                 }
             }
         }
@@ -314,6 +318,8 @@ public class Gramatica extends ArrayList<Producao> {
                 apenasUnitarios.add(prod);
             }
         }
+        
+        //Para cada producao unitária ele irá criar as novas producoes onde ela ocorre
         
         for(Producao producaoUnitaria : apenasUnitarios){
             producoesDoSimbolo = getProducoesByEsquerda(producaoUnitaria.getSimbolos().get(0).getConteudo());
